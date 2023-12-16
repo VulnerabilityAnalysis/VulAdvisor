@@ -1,0 +1,41 @@
+tokenizer:
+  model_name: Salesforce/codet5-base
+  padding_side: left
+  truncation_side: right
+  pad_token_as_eos_token: False 
+
+datapool:
+  id: my_data_pool
+  args:
+    prompt_prefix: ""
+
+alg:
+  id: supervised
+  training_args:
+    per_device_train_batch_size: 32
+    logging_steps: 5000
+    num_train_epochs: 50
+    weight_decay: 0.1
+    lr_scheduler_type: cosine
+    learning_rate: 0.0001
+    save_total_limit: 1
+  model_type: seq2seq
+  model_name: Salesforce/codet5-base
+  generation_kwargs:
+    do_sample: False
+    top_k: 0
+    temperature: 1.0
+    min_length: 10
+    num_beams: 5
+    max_new_tokens: 1000
+    post_processing_fn: null
+
+train_evaluation:
+  eval_batch_size: 50
+  metrics:
+    - id: meteor
+      args: {}
+    - id: rouge
+    - id: bleu
+      args: {}
+
